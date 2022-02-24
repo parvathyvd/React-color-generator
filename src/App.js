@@ -8,7 +8,7 @@ function App() {
   const [alert, setAlert] = useState(false);
   const [itemClicked, setItemClicked] = useState("");
   const [inputedColor, setInputedColor] = useState("");
-  console.log(color);
+  const [error, setError] = useState(false);
 
   const setChangeAlert = (id, hex) => {
     setAlert(true);
@@ -19,7 +19,13 @@ function App() {
 
   const generateColor = (colr) => {
     console.log("typed color", colr);
-    setColor(new Values(`${colr}`).all(10));
+    try {
+      setColor(new Values(`${colr}`).all(10));
+      setError(false);
+    } catch (error) {
+      console.log(error);
+      setError(true);
+    }
   };
 
   return (
@@ -31,6 +37,7 @@ function App() {
         onChange={(e) => setInputedColor(e.target.value)}
         value={inputedColor}
         style={{ margin: "1rem" }}
+        className={`${error ? "error" : null}`}
       />
       <button className="btn" onClick={() => generateColor(inputedColor)}>
         Generate
